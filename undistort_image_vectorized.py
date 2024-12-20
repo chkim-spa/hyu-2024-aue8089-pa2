@@ -13,7 +13,7 @@ def undistort_image_vectorized(img: np.ndarray,
     Args:
         img: distorted image (HxW)
         K: camera matrix (3x3)
-        D: distortion coefficients (4x1)
+        D: distortion coefficients (4x1) -> (2x1)
 
     Returns:
         und_img: undistorted image (HxW)

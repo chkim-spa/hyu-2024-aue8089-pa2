@@ -40,10 +40,20 @@ def undistort_image(img: np.ndarray,
                 a = u - u1
                 b = v - v1
 
-                # [TODO] weighted sum of pixel values in img
+                # Bilinear interpolation
+                I11 = img[v1, u1]       # Top-left
+                I21 = img[v1, u1 + 1]   # Top-right
+                I12 = img[v1 + 1, u1]   # Bottom-left
+                I22 = img[v1 + 1, u1 + 1]  # Bottom-right
 
+                # [TODO] weighted sum of pixel values in img
+                value = (1 - a) * (1 - b) * I11 + a * (1 - b) * I21 + (1 - a) * b * I12 + a * b * I22
+                undistorted_img[y, x] = np.clip(value, 0, 255)  # Clipping for safety
             else:
                 # [TODO] nearest neighbor
-
+                u_nearest = int(round(u))
+                v_nearest = int(round(v))
+                if 0 <= u_nearest < width and 0 <= v_nearest < height:
+                    undistorted_img[y, x] = img[v_nearest, u_nearest]
 
     return undistorted_img
